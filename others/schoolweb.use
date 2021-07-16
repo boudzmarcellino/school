@@ -1,0 +1,143 @@
+model schoolweb
+enum Niveau{licence1, licence2, licence, master1, master2, ingenieur1, ingenieur, doctorat, professorat}
+enum Genre{ordinaire, laboratoire, amphi}
+
+-- ENTITES-ASSOCIATION-CONTRAINTES
+
+
+class Departement
+    attributes
+        nom:String
+    operations
+        Departement()
+        choisirChefDepartement()
+        ajouterMembre()       
+end 
+
+class Formation
+    attributes
+        nom:String
+    operations
+end
+aggregation DepartementFormation between 
+    Departement[1]
+    Formation[1..*]
+end
+
+class Classe
+    attributes
+        niveau:Niveau
+    operations
+        Classe()
+-- classe est une 
+-- une formation est composee de plusieurs professeurs(enseignant) matieres(enseignement) et etudiants(apprenant)
+-- une formation possede un chef de formation
+end
+aggregation FormationClasse between
+    Formation[1]
+    Classe[2..*]
+end 
+
+
+class Matiere
+    attributes
+        nom:String
+        coeficient:Integer
+        controle:Real
+        examen:Real
+    operations
+        Matiere()
+-- une matiere peut apprtenir a 1..* formations
+-- une matiere est dispense par un professeur
+end
+aggregation MatiereProfesseur between
+    Matiere[1..*]
+    Professeur[1]
+end
+
+
+associationclass Cours between
+    Matiere[1..*] role mat
+    Classe[1..*] role etudiant
+    attributes
+        date:String
+        heureDebut:String
+        heureFin:String
+    operations
+end
+
+
+class Salle
+    attributes
+        nom:String
+        type:Genre
+        places:Integer
+end
+association CoursSalle between 
+    Cours[1] role activite
+    Salle[1] role salle
+end
+
+
+class Professeur
+    attributes
+        nom:String
+        prenom:String
+        aEntree:Integer
+        grade:Niveau
+    operations
+        Professeur(nom:String, prenom:String, aEntree:Integer, grade:Niveau, specialite:String)
+        getNom():String
+        getPrenom():String
+        getGrade():Niveau
+        getAEntree():Integer
+        toString():String
+--un professeur est associe a 1..* Matiere
+--chef de formation:professeur a la tete d'une formation
+end
+
+class ChefDepartement<Professeur end
+
+aggregation DepartementChefDepartement between
+    Departement[1] role departement
+    ChefDepartement[1] role chefDepartement
+end
+
+class ChefFormation<Professeur end
+aggregation FormationChefFormation between
+    Formation[1]
+    ChefFormation[1]
+end
+
+--association DepartementProfesseur between
+--    Departement[1..*]role dpt
+--    Professeur[1..*]
+--end
+--association MatiereProfesseur between
+--    Matiere[1..*] role ue
+--    Professeur[1] role enseignant
+--end
+
+
+class Etudiant
+    attributes
+        nom: String 
+        prenom:String
+        aEntree:Integer
+        nEntree:Niveau
+    operations
+        Etudiant(nom:String, prenom:String, aEntree:Integer, nEntree:Niveau)
+        getNom():String
+        getPrenom():String
+        getNEntree():Niveau
+        getAEntree():Integer
+        getOption():String
+        toString():String
+end
+
+aggregation ClasseEtudiant between 
+    Classe[1]
+    Etudiant[1..*]
+end
+
+

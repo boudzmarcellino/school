@@ -1,0 +1,20 @@
+FONCTIONNALITES
+Etudiant
+    Feature: demande inscription
+    Feature:demande de cesure
+    Feature: inscription
+    Feature:reinscription
+    Feature:consulter emploi du temps
+    Feature:consulter releve
+
+Professeur
+    Feature:programmer cours
+    Feature:Programmer controle
+    Feature:programmer evaluation
+    Feature:remplir relever matiere
+    Feature:remplir decison
+    Feature:publier information
+
+ChefFormation, ChefDepartement
+    Feature:remplir emploi du temps jour
+    Feature:modifier emploi du temps jour
